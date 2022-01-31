@@ -56,6 +56,17 @@ class Color {
     return Color(r: r, g: g, b: b, a: a);
   }
 
+  /// Construct the color from a hex code string, of the format #AARRGGBB.
+  factory Color.fromARGBHex({String code}) {
+    var str = code.substring(1, 9);
+    var bigint = int.parse(str, radix: 16);
+    final a = (bigint >> 24) & 255;
+    final r = (bigint >> 16) & 255;
+    final g = (bigint >> 8) & 255;
+    final b = bigint & 255;
+    return Color(r: r, g: g, b: b, a: a);
+  }
+
   Color get darker =>
       _darker ??
       Color(

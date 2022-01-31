@@ -13,8 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:ui' as ui show Gradient, Shader;
 import 'dart:math' show Point, Rectangle, max;
+import 'dart:ui' as ui show Gradient, Shader;
+
 import 'package:charts_common/common.dart' as common
     show
         BlendMode,
@@ -28,12 +29,13 @@ import 'package:charts_common/common.dart' as common
         TextElement,
         TextDirection;
 import 'package:flutter/material.dart';
-import 'text_element.dart' show TextElement;
+
 import 'canvas/circle_sector_painter.dart' show CircleSectorPainter;
 import 'canvas/line_painter.dart' show LinePainter;
 import 'canvas/pie_painter.dart' show PiePainter;
 import 'canvas/point_painter.dart' show PointPainter;
 import 'canvas/polygon_painter.dart' show PolygonPainter;
+import 'text_element.dart' show TextElement;
 
 class ChartCanvas implements common.ChartCanvas {
   /// Pixels to allow to overdraw above the draw area that fades to transparent.
@@ -224,7 +226,13 @@ class ChartCanvas implements common.ChartCanvas {
       bool roundBottomRight}) {
     // Use separate rect for drawing stroke
     _paint.color = new Color.fromARGB(fill.a, fill.r, fill.g, fill.b);
-    _paint.style = PaintingStyle.fill;
+
+    if (stroke != null && strokeWidthPx > 0) {
+      _paint.strokeWidth = strokeWidthPx;
+      _paint.style = PaintingStyle.stroke;
+    } else {
+      _paint.style = PaintingStyle.fill;
+    }
 
     canvas.drawRRect(
         _getRRect(bounds,

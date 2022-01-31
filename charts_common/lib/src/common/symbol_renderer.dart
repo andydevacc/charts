@@ -15,6 +15,7 @@
 
 import 'dart:math' show Rectangle, Point, min, sqrt;
 
+import 'package:charts_common/src/chart/common/base_chart.dart';
 import 'package:meta/meta.dart' show protected;
 
 import '../chart/common/chart_canvas.dart' show ChartCanvas, FillPatternType;
@@ -23,6 +24,12 @@ import 'style/style_factory.dart' show StyleFactory;
 
 /// Strategy for rendering a symbol.
 abstract class BaseSymbolRenderer {
+  BaseChart chart;
+
+  void onAttach(BaseChart chart) {
+    this.chart = chart;
+  }
+
   bool shouldRepaint(covariant BaseSymbolRenderer oldRenderer);
 }
 

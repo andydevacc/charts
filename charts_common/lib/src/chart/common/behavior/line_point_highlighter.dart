@@ -85,6 +85,9 @@ class LinePointHighlighter<D> implements ChartBehavior<D> {
   /// This is because if dashPattern is null or not set, it defaults to [1,3].
   final List<int> dashPattern;
 
+  /// The color for line
+  Color color;
+
   /// Whether or not follow lines should be drawn across the entire chart draw
   /// area, or just from the axis to the point.
   ///
@@ -123,6 +126,7 @@ class LinePointHighlighter<D> implements ChartBehavior<D> {
       LinePointHighlighterFollowLineType showHorizontalFollowLine,
       LinePointHighlighterFollowLineType showVerticalFollowLine,
       List<int> dashPattern,
+      Color color,
       bool drawFollowLinesAcrossChart,
       SymbolRenderer symbolRenderer})
       : selectionModelType = selectionModelType ?? SelectionModelType.info,
@@ -133,6 +137,7 @@ class LinePointHighlighter<D> implements ChartBehavior<D> {
         showVerticalFollowLine = showVerticalFollowLine ??
             LinePointHighlighterFollowLineType.nearest,
         dashPattern = dashPattern ?? [1, 3],
+        color = color,
         drawFollowLinesAcrossChart = drawFollowLinesAcrossChart ?? true,
         symbolRenderer = symbolRenderer ?? CircleSymbolRenderer() {
     _lifecycleListener =
@@ -143,12 +148,17 @@ class LinePointHighlighter<D> implements ChartBehavior<D> {
   void attachTo(BaseChart<D> chart) {
     _chart = chart;
 
+    if (symbolRenderer != null) {
+      symbolRenderer.onAttach(_chart);
+    }
+
     _view = _LinePointLayoutView<D>(
         chart: chart,
         layoutPaintOrder: LayoutViewPaintOrder.linePointHighlighter,
         showHorizontalFollowLine: showHorizontalFollowLine,
         showVerticalFollowLine: showVerticalFollowLine,
         dashPattern: dashPattern,
+        color: color,
         drawFollowLinesAcrossChart: drawFollowLinesAcrossChart,
         symbolRenderer: symbolRenderer);
 
@@ -287,6 +297,8 @@ class _LinePointLayoutView<D> extends LayoutView {
 
   final List<int> dashPattern;
 
+  Color color;
+
   Rectangle<int> _drawAreaBounds;
 
   Rectangle<int> get drawBounds => _drawAreaBounds;
@@ -311,6 +323,7 @@ class _LinePointLayoutView<D> extends LayoutView {
     @required this.showVerticalFollowLine,
     @required this.symbolRenderer,
     this.dashPattern,
+    this.color,
     this.drawFollowLinesAcrossChart,
   }) : layoutConfig = LayoutViewConfig(
             paintOrder: LayoutViewPaintOrder.linePointHighlighter,
@@ -447,7 +460,7 @@ class _LinePointLayoutView<D> extends LayoutView {
               Point<num>(leftBound, pointElement.point.y),
               Point<num>(rightBound, pointElement.point.y),
             ],
-            stroke: StyleFactory.style.linePointHighlighterColor,
+            stroke: color != null ? color : StyleFactory.style.linePointHighlighterColor,
             strokeWidthPx: 1.0,
             dashPattern: dashPattern);
 
@@ -472,7 +485,7 @@ class _LinePointLayoutView<D> extends LayoutView {
               Point<num>(
                   pointElement.point.x, drawBounds.top + drawBounds.height),
             ],
-            stroke: StyleFactory.style.linePointHighlighterColor,
+            stroke: color != null ? color : StyleFactory.style.linePointHighlighterColor,
             strokeWidthPx: 1.0,
             dashPattern: dashPattern);
 

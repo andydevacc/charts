@@ -13,13 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:collection/collection.dart' show ListEquality;
 import 'package:charts_common/common.dart' as common
     show
         LinePointHighlighter,
         LinePointHighlighterFollowLineType,
         SelectionModelType,
         SymbolRenderer;
+import 'package:charts_flutter/flutter.dart';
+import 'package:collection/collection.dart' show ListEquality;
 import 'package:flutter/widgets.dart' show hashValues;
 import 'package:meta/meta.dart' show immutable;
 
@@ -60,6 +61,9 @@ class LinePointHighlighter extends ChartBehavior<common.LinePointHighlighter> {
   /// This is because if dashPattern is null or not set, it defaults to [1,3].
   final List<int> dashPattern;
 
+  /// The color for line
+  Color color;
+
   /// Whether or not follow lines should be drawn across the entire chart draw
   /// area, or just from the axis to the point.
   ///
@@ -78,6 +82,7 @@ class LinePointHighlighter extends ChartBehavior<common.LinePointHighlighter> {
       this.showHorizontalFollowLine,
       this.showVerticalFollowLine,
       this.dashPattern,
+      this.color,
       this.drawFollowLinesAcrossChart,
       this.symbolRenderer});
 
@@ -90,6 +95,7 @@ class LinePointHighlighter extends ChartBehavior<common.LinePointHighlighter> {
         showHorizontalFollowLine: showHorizontalFollowLine,
         showVerticalFollowLine: showVerticalFollowLine,
         dashPattern: dashPattern,
+        color: color,
         drawFollowLinesAcrossChart: drawFollowLinesAcrossChart,
         symbolRenderer: symbolRenderer,
       );

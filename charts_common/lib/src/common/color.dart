@@ -45,25 +45,24 @@ class Color {
         _darker = darker ?? color._darker,
         _lighter = lighter ?? color._lighter;
 
+  Color withAlpha(double opacity) {
+    assert(opacity >= 0.0 && opacity <= 1.0);
+    final alpha = (255.0 * opacity).round();
+    return Color(a: alpha, r: this.r, g: this.g, b: this.b);
+  }
+
   /// Construct the color from a hex code string, of the format #RRGGBB.
-  factory Color.fromHex({String code}) {
+  factory Color.fromHex({String code, double opacity}) {
     var str = code.substring(1, 7);
     var bigint = int.parse(str, radix: 16);
     final r = (bigint >> 16) & 255;
     final g = (bigint >> 8) & 255;
     final b = bigint & 255;
-    final a = 255;
-    return Color(r: r, g: g, b: b, a: a);
-  }
-
-  /// Construct the color from a hex code string, of the format #AARRGGBB.
-  factory Color.fromARGBHex({String code}) {
-    var str = code.substring(1, 9);
-    var bigint = int.parse(str, radix: 16);
-    final a = (bigint >> 24) & 255;
-    final r = (bigint >> 16) & 255;
-    final g = (bigint >> 8) & 255;
-    final b = bigint & 255;
+    var alpha = 255;
+    if (opacity != null && opacity >= 0.0 && opacity <= 1.0) {
+      alpha = (255.0 * opacity).round();
+    }
+    final a = alpha;
     return Color(r: r, g: g, b: b, a: a);
   }
 

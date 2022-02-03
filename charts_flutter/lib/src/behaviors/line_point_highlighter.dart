@@ -62,7 +62,7 @@ class LinePointHighlighter extends ChartBehavior<common.LinePointHighlighter> {
   final List<int> dashPattern;
 
   /// The color for line
-  Color color;
+  final Color color;
 
   /// Whether or not follow lines should be drawn across the entire chart draw
   /// area, or just from the axis to the point.
@@ -114,6 +114,7 @@ class LinePointHighlighter extends ChartBehavior<common.LinePointHighlighter> {
         showHorizontalFollowLine == o.showHorizontalFollowLine &&
         showVerticalFollowLine == o.showVerticalFollowLine &&
         selectionModelType == o.selectionModelType &&
+        color == o.color &&
         new ListEquality().equals(dashPattern, o.dashPattern) &&
         drawFollowLinesAcrossChart == o.drawFollowLinesAcrossChart;
   }
@@ -128,6 +129,7 @@ class LinePointHighlighter extends ChartBehavior<common.LinePointHighlighter> {
       showVerticalFollowLine,
       dashPattern,
       drawFollowLinesAcrossChart,
+      color,
     );
   }
 }

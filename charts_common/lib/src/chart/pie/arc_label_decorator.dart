@@ -110,7 +110,13 @@ class ArcLabelDecorator<D> extends ArcRendererDecorator<D> {
     for (var element in arcElements.arcs) {
       final labelFn = element.series.labelAccessorFn;
       final datumIndex = element.index;
-      final label = (labelFn != null) ? labelFn(datumIndex) : null;
+      final label = (labelFn != null) && datumIndex != null ? labelFn(
+          datumIndex) : null;
+
+      // Skip calculation and drawing for this element if no label.
+      if (label == null || label.isEmpty) {
+        continue;
+      }
 
       // If there are custom styles, use that instead of the default or the
       // style defined for the entire decorator.
@@ -124,11 +130,6 @@ class ArcLabelDecorator<D> extends ArcRendererDecorator<D> {
           datumIndex,
           graphicsFactory,
           defaultStyle: outsideLabelStyle);
-
-      // Skip calculation and drawing for this element if no label.
-      if (label == null || label.isEmpty) {
-        continue;
-      }
 
       final arcAngle = element.endAngle - element.startAngle;
 
